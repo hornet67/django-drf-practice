@@ -1,14 +1,8 @@
-from django import forms
 from django.contrib import admin
 from django.urls import path
 from django.http import JsonResponse
 from .models import Division, District, Person
-
-# Custom form for Person
-class PersonForm(forms.ModelForm):
-    class Meta:
-        model = Person
-        fields = '__all__'
+from .forms import PersonForm
 
 @admin.register(Division)
 class DivisionAdmin(admin.ModelAdmin):
@@ -33,8 +27,9 @@ class PersonAdmin(admin.ModelAdmin):
     search_fields = ('name', 'email')
 
     class Media:
-        js = ('js/filter_districts.js',)  # make sure this path is correct
+        js = ('js/filter_districts.js',)  # make sure this path exists
 
+    # Custom URL for AJAX request
     def get_urls(self):
         urls = super().get_urls()
         custom_urls = [
